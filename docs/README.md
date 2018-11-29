@@ -3,6 +3,7 @@
 # MobX
 
 _Simple, scalable state management_
+_쉽고, 확장 가능한 상태 관리_
 
 [![Build Status](https://travis-ci.org/mobxjs/mobx.svg?branch=master)](https://travis-ci.org/mobxjs/mobx)
 [![Coverage Status](https://coveralls.io/repos/mobxjs/mobx/badge.svg?branch=master&service=github)](https://coveralls.io/github/mobxjs/mobx?branch=master)
@@ -60,27 +61,41 @@ _Tip: the main entry point of the MobX 5 package ships with ES5 code for backwar
 
 MobX is a battle tested library that makes state management simple and scalable by transparently applying functional reactive programming (TFRP).
 The philosophy behind MobX is very simple:
+MobX는 TFRP(함수형 반응형 프로그래밍)를 투명하게 적용하여 상태 관리를 간단하고 확장성있게 만드는 battle tested library이다.
+MobX의 철학은 매우 간단하다.
 
 _Anything that can be derived from the application state, should be derived. Automatically._
+_애플리케이션 상태로부터 파생될 수 있는 모든 것은 자동으로 파생되어야 한다._
 
 which includes the UI, data serialization, server communication, etc.
+UI를 포함한, 데이터 직렬화, 서버 커뮤니케이션 등.
 
 <img alt="MobX unidirectional flow" src="docs/flow.png" align="center" />
 
 React and MobX together are a powerful combination. React renders the application state by providing mechanisms to translate it into a tree of renderable components. MobX provides the mechanism to store and update the application state that React then uses.
+React와 MobX는 강력한 조합이다. 리엑트는 렌더링 가능한 구성요소 트리로 변환하는 메커니즘을 제공하여 애플리케이션의 상태를 렌더링한다. MobX는 React가 사용하는 애플리케이션 상태를 저장하고 업데이트 하는 메커니즘을 제공한다. 
 
 Both React and MobX provide an optimal and unique solutions to common problems in application development. React provides mechanisms to optimally render UI by using a virtual DOM that reduces the number of costly DOM mutations. MobX provides mechanisms to optimally synchronize application state with your React components by using a reactive virtual dependency state graph that is only updated when strictly needed and is never stale.
+React와 MobX는 애플리케이션 개발에 공통적 문제를 해결하기 위한 최적의 해결책을 제공한다. React는 가상의 DOM을 사용하여 DOM 변화 비용을 줄여 UI를 렌더링하는 최적의 메커니즘을 제공한다. 
+최적으로 동기화된 애플리케이션 상태와 엄격하게 필요로 하고 안정할 때 업데이트하는 반응형 가상 의존 상태 그래프를 사용하는 리액트 컴포넌트 메커니즘을 제공한다. 
 
 ## Core concepts
+## 코어 개념
 
 MobX has only a few core concepts. The following snippets can be tried online using [codesandbox example](https://codesandbox.io/s/v3v0my2370).
+MobX는 소수의 핵심 개념을 가진다. [codesandbox example](https://codesandbox.io/s/v3v0my2370).
+
 
 ### Observable state
+### Observable 상태
 
 <i><a style="color: white; background:green;padding:5px;margin:5px;border-radius:2px" href="https://egghead.io/lessons/javascript-sync-the-ui-with-the-app-state-using-mobx-observable-and-observer-in-react">Egghead.io lesson 1: observable & observer</a></i>
 
 MobX adds observable capabilities to existing data structures like objects, arrays and class instances.
 This can simply be done by annotating your class properties with the [@observable](http://mobxjs.github.io/mobx/refguide/observable-decorator.html) decorator (ES.Next).
+MobX는 객체, 배열, 클래스 같은 기존 자료 구조를 관측하는 기능을 추가했다.
+이는 단순하게 class 속성에 @observable 같이 어노테이팅하여 사용할 수 있다.
+
 
 ```javascript
 import { observable } from "mobx"
@@ -94,11 +109,17 @@ class Todo {
 
 Using `observable` is like turning a property of an object into a spreadsheet cell.
 But unlike spreadsheets, these values can be not only primitive values, but also references, objects and arrays.
+`observable`을 사용하는 것은 객체 속성을 스피드시트 셀로 바꾸는 것과 같다.
+하지만, 스프리드시트와 달리 값 뿐만 아니라, 레퍼런스, 객체와 배열을 가질 수 있다.
 
 If your environment doesn't support decorator syntax, don't worry.
 You can read [here](http://mobxjs.github.io/mobx/best/decorators.html) about how to set them up.
 Or you can skip them altogether, as MobX can be used fine without decorator _syntax_, by leveraging the _decorate_ utility.
 Many MobX users do prefer the decorator syntax though, as it is slightly more concise.
+만약 환경이 decorator syntax를 지원하지 않더라도 걱정 하지 않아도 된다.
+이 링크를 읽어보아라 [here](http://mobxjs.github.io/mobx/best/decorators.html)
+혹은 decorate utility를 사용하면 MobX를 decorator syntax 없이 사용할 수 있으므로 스킵할 수 있다.
+많은 MobX 사용자는 decorator를 더 간결히 사용하길 원한다.
 
 ```javascript
 import { decorate, observable } from "mobx"
@@ -115,11 +136,13 @@ decorate(Todo, {
 ```
 
 ### Computed values
+### Computed values
 
 <i><a style="color: white; background:green;padding:5px;margin:5px;border-radius:2px" href="https://egghead.io/lessons/javascript-derive-computed-values-and-manage-side-effects-with-mobx-reactions">Egghead.io lesson 3: computed values</a></i>
 
 With MobX you can define values that will be derived automatically when relevant data is modified.
 By using the [`@computed`](http://mobxjs.github.io/mobx/refguide/computed-decorator.html) decorator or by using getter / setter functions when using `(extend)Observable` (Of course, you can use `decorate` here again as alternative to the `@` syntax).
+`(extend)Observable` (Of course, you can use `decorate` here again as alternative to the `@` syntax)을 사용할 때 [`@computed`](http://mobxjs.github.io/mobx/refguide/computed-decorator.html)decorator 또는 getter setter을 사용하여 데이터 변경 시 자동적 파생되는 값을 정의할 수 있다. (물론 @ 대신 decorate 문법 사용은 가능하다)
 
 ```javascript
 class TodoList {
